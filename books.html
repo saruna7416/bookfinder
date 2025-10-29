@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Finder</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 2rem;
+        background: linear-gradient(135deg, #ece9f7 0%, #b9eff7 100%);
+        min-height: 100vh;
+        margin: 0;
+    }
+    h1 {
+        margin-top: 0;
+        font-size: 3rem;
+        color: #1c3e56;
+        text-align: center;
+    }
+    form {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    input[type="text"] {
+        padding: 0.75rem 1rem;
+        border: 1.5px solid #547382;
+        border-radius: 25px;
+        font-size: 1rem;
+        width: 300px;
+        outline: none;
+        transition: border 0.2s;
+        background:rgb(169, 208, 224);
+        box-shadow: 0 2px 5px rgba(80,190,240,0.06);
+    }
+    input[type="text"]:focus {
+        border-color: #87b6bd;
+    }
+    button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 25px;
+        background: #1c3e56;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(28,62,86,0.09);
+        transition: background 0.2s;
+    }
+    button:hover {
+        background: #2e5c82;
+    }
+.book-card {
+    background: rgba(34, 44, 56, 0.3); 
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    padding: 2rem 1.2rem;
+    width: 300px;
+    color: #000000;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(18px) saturate(120%);
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+    transition: transform 0.18s, box-shadow 0.18s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.98;
+}
+
+.book-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+    border: 1.7px solid rgba(137, 135, 135, 0.38);
+}
+
+.book-card img {
+    width: 140px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(20,30,40,0.21);
+    margin-bottom: 1rem;
+    background: #ffffff;
+}
+
+.book-card h2 {
+    font-size: 1.35rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 900;
+    color: #f1d247;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.19);
+}
+
+.book-card p {
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin: 0.45rem 0;
+    font-style: oblique;
+    color:rgb(15, 14, 14);
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 9px rgba(0, 20, 40, 0.15);
+}
+
+.book-card strong {
+    color: rgb(174, 96, 96);
+    font-style: normal !important;
+    text-transform: uppercase;
+    font-size: 0.90rem;
+    margin-right: 5px;
+    letter-spacing: 0.04em;
+}
+
+.books {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.4rem;
+    align-items: stretch;
+    text-align: center;
+    
+}
+   
+</style>
+
+</head>
+<body>
+    <h1>Book Finder</h1>
+    <form method="get">
+        <input type="text" name="q" placeholder="Search book title..." value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+    <div class="books">
+        {% for book in books %}
+            <div class="book-card">
+                {% if book.cover_i %}
+                    <img src="https://covers.openlibrary.org/b/id/{{ book.cover_i }}-M.jpg" alt="{{ book.title }}">
+                {% else %}
+                    <div>No Cover</div>
+                {% endif %}
+                <h2>{{ book.title }}</h2>
+                <p><strong>Author:</strong> {{ book.author_name.0 }}</p>
+                <p><strong>Published:</strong> {{ book.first_publish_year }}</p>
+            </div>
+        {% empty %}
+            <p>No books found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
